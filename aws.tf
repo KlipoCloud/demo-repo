@@ -84,9 +84,9 @@ resource "aws_ebs_volume" "unassigned_volume" {
 #}
 
 # 3. Orphaned snapshot (not in use)
-resource "aws_ebs_snapshot" "orphaned_snapshot" {
-  volume_id = aws_ebs_volume.unassigned_volume.id
-  tags = {
-    Name = "Orphaned-Snapshot"
-  }
-}
+#resource "aws_ebs_snapshot" "orphaned_snapshot" {
+#  volume_id = aws_ebs_volume.unassigned_volume.id
+#  tags = {
+#    Name = "Orphaned-Snapshot"
+#  }
+#}
