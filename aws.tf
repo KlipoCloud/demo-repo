@@ -76,6 +76,17 @@ resource "aws_ebs_volume" "unassigned_volume" {
 
 
 /*
+# 3. Orphaned snapshot (not in use)
+resource "aws_ebs_snapshot" "orphaned_snapshot" {
+  volume_id = aws_ebs_volume.unassigned_volume.id
+  tags = {
+    Name = "Orphaned-Snapshot"
+  }
+}
+
+*/
+
+/*
 resource "aws_eip_association" "web_eip_assoc" {
   instance_id   = aws_instance.web.id
   allocation_id = aws_eip.unassigned_eip.id
@@ -88,17 +99,6 @@ resource "aws_volume_attachment" "web_ebs_attach" {
   device_name = "/dev/xvdf" # Mounting as a secondary disk
   volume_id   = aws_ebs_volume.unassigned_volume.id
   instance_id = aws_instance.web.id
-}
-
-*/
-
-/*
-# 3. Orphaned snapshot (not in use)
-resource "aws_ebs_snapshot" "orphaned_snapshot" {
-  volume_id = aws_ebs_volume.unassigned_volume.id
-  tags = {
-    Name = "Orphaned-Snapshot"
-  }
 }
 
 */
