@@ -56,12 +56,13 @@ resource "aws_instance" "web2" {
   }
 }
 
+# Removed Elastic IP (EIP) resource due to issue: Unassociated Elastic IP causing unnecessary costs.
 # 1. Unassigned Elastic IP (EIP)
-resource "aws_eip" "unassigned_eip" {
-  tags = {
-    Name = "Unassigned-EIP"
-  }
-}
+# resource "aws_eip" "unassigned_eip" {
+#   tags = {
+#     Name = "Unassigned-EIP"
+#   }
+# }
 
 resource "aws_eip_association" "web_eip_assoc" {
   instance_id   = aws_instance.web.id
