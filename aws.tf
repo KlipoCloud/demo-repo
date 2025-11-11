@@ -63,7 +63,7 @@ resource "aws_eip" "unassigned_eip" {
 }
 
 resource "aws_eip_association" "web_eip_assoc" {
-  instance_id   = aws_instance.web.id
+  instance_id   = aws_instance.web2.id
   allocation_id = aws_eip.unassigned_eip.id
 }
 
@@ -79,7 +79,7 @@ resource "aws_ebs_volume" "unassigned_volume" {
 resource "aws_volume_attachment" "web_ebs_attach" {
   device_name = "/dev/xvdf"
   volume_id   = aws_ebs_volume.unassigned_volume.id
-  instance_id = aws_instance.web.id
+  instance_id = aws_instance.web2.id
 }
 
 resource "aws_ebs_snapshot" "orphaned_snapshot" {
