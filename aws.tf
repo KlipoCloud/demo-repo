@@ -69,7 +69,7 @@ resource "aws_eip_association" "web_eip_assoc" {
 
 resource "aws_ebs_volume" "unassigned_volume" {
   availability_zone = "us-east-1a"
-  size              = 10
+  size             = 10
   tags = {
     Name = "Unassigned-EBS"
   }
