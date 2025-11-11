@@ -87,6 +87,6 @@ resource "aws_volume_attachment" "web_ebs_attach" {
 resource "aws_ebs_snapshot" "orphaned_snapshot" {
   volume_id = aws_ebs_volume.unassigned_volume.id
   tags = {
-    Name = "Orphaned-Snapshot"
+    Name = "Active-Snapshot"
   }
 }
