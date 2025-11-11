@@ -51,7 +51,7 @@ resource "aws_instance" "web2" {
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   root_block_device {
-    volume_type = "gp2"
+    volume_type = "gp3"
     volume_size = 20
   }
 }
@@ -71,7 +71,8 @@ resource "aws_eip_association" "web_eip_assoc" {
 # 2. Unassigned EBS volume
 resource "aws_ebs_volume" "unassigned_volume" {
   availability_zone = "us-east-1a"
-  size             = 10
+  size              = 10
+  type              = "gp3"
   tags = {
     Name = "Unassigned-EBS"
   }
@@ -80,7 +81,7 @@ resource "aws_ebs_volume" "unassigned_volume" {
 resource "aws_volume_attachment" "web_ebs_attach" {
   device_name = "/dev/xvdf"  # Mounting as a secondary disk
   volume_id   = aws_ebs_volume.unassigned_volume.id
-  instance_id = aws_instance.web.id
+  instance_id = aws_instance.web2.id
 }
 
 # 3. Orphaned snapshot (not in use)
