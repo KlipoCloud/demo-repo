@@ -71,22 +71,22 @@ resource "aws_instance" "web2" {
 #   instance_id = aws_instance.web.id
 # }
 
-# 1. Unassigned Elastic IP (EIP)
-resource "aws_eip" "unassigned_eip" {
-  tags = {
-    Name = "Unassigned-EIP"
-  }
-}
+# COMMENTED: Unassociated Elastic IP (EIP)
+# resource "aws_eip" "unassigned_eip" {
+#   tags = {
+#     Name = "Unassigned-EIP"
+#   }
+# }
 
 resource "aws_eip_association" "web_eip_assoc" {
-  instance_id   = aws_instance.web.id
+  instance_id   = aws_instance.web2.id
   allocation_id = aws_eip.unassigned_eip.id
 }
 
-# 3. Orphaned snapshot (not in use)
-resource "aws_ebs_snapshot" "orphaned_snapshot" {
-  volume_id = aws_ebs_volume.unassigned_volume.id
-  tags = {
-    Name = "Orphaned-Snapshot"
-  }
-}
+# COMMENTED: Orphaned snapshot (not in use)
+# resource "aws_ebs_snapshot" "orphaned_snapshot" {
+#   volume_id = aws_ebs_volume.unassigned_volume.id
+#   tags = {
+#     Name = "Orphaned-Snapshot"
+#   }
+# }
