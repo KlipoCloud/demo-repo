@@ -81,9 +81,9 @@ resource "aws_volume_attachment" "web_ebs_attach" {
   instance_id = aws_instance.web.id
 }
 
-resource "aws_ebs_snapshot" "orphaned_snapshot" {
-  volume_id = aws_ebs_volume.unassigned_volume.id
-  tags = {
-    Name = "Orphaned-Snapshot"
-  }
-}
+# resource "aws_ebs_snapshot" "orphaned_snapshot" {
+#   volume_id = aws_ebs_volume.unassigned_volume.id
+#   tags = {
+#     Name = "Orphaned-Snapshot"
+#   }
+# }
