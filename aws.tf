@@ -76,11 +76,3 @@ resource "aws_instance" "web2" {
 #   volume_id   = aws_ebs_volume.unassigned_volume.id
 #   instance_id = aws_instance.web.id
 # }
-
-# 3. Orphaned snapshot (not in use)
-resource "aws_ebs_snapshot" "orphaned_snapshot" {
-  volume_id = aws_ebs_volume.unassigned_volume.id
-  tags = {
-    Name = "Orphaned-Snapshot"
-  }
-}
