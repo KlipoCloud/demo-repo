@@ -19,18 +19,18 @@ resource "azurerm_resource_group" "unused_resources" {
 # }
 
 # SIGNAL: Storage account with expensive tier for dev
-resource "azurerm_storage_account" "expensive_storage" {
-  name                     = "stexpensivedev001"
-  resource_group_name      = azurerm_resource_group.unused_resources.name
-  location                 = azurerm_resource_group.unused_resources.location
-  account_tier             = "Standard" # Updated from Premium to Standard for cost optimization
-  account_replication_type = "LRS"      # Updated from ZRS to LRS for cost efficiency
+# resource "azurerm_storage_account" "expensive_storage" {
+#   name                     = "stexpensivedev001"
+#   resource_group_name      = azurerm_resource_group.unused_resources.name
+#   location                 = azurerm_resource_group.unused_resources.location
+#   account_tier             = "Standard" # Updated from Premium to Standard for cost optimization
+#   account_replication_type = "LRS"      # Updated from ZRS to LRS for cost efficiency
 
-  tags = {
-    Environment = "development"
-    # SIGNAL: Premium storage for non-production
-  }
-}
+#   tags = {
+#     Environment = "development"
+#     # SIGNAL: Premium storage for non-production
+#   }
+# }
 
 # SIGNAL: Load balancer with no backend pool
 # resource "azurerm_lb" "unused_lb" {
