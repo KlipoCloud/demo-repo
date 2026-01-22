@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "expensive_archive" {
   name                     = "stexpensivehot001"
   resource_group_name      = azurerm_resource_group.wrong_storage.name
   location                 = azurerm_resource_group.wrong_storage.location
-  account_tier             = "Standard"
+  account_tier             = "Cool" # Updated to use Cool tier for cost optimization
   account_replication_type = "LRS" # Updated to use locally redundant storage for cost optimization
 
   blob_properties {
