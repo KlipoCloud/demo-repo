@@ -38,7 +38,7 @@ resource "azurerm_postgresql_server" "oversized_postgres" {
   administrator_login          = "psqladmin"
   administrator_login_password = "P@ssw0rd123!"
 
-  sku_name   = "GP_Gen5_2" # SIGNAL: Updated to 2 vCores for test environment
+  sku_name   = "GP_Gen5_1" # Adjusted to 1 vCore for test environment
   version    = "11"
   storage_mb = 102400
 
