@@ -1,4 +1,3 @@
-@ -0,0 +1,152 @@
 # Signal 6: Oversized Database Tiers for Actual Usage
 resource "azurerm_resource_group" "oversized_db" {
   name     = "rg-oversized-db-test"
