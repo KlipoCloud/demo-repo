@@ -51,18 +51,18 @@ resource "azurerm_lb" "unused_lb" {
 }
 
 # SIGNAL: Managed disk not attached to any VM
-resource "azurerm_managed_disk" "orphaned_disk" {
-  name                 = "disk-orphaned"
-  location             = azurerm_resource_group.unused_resources.location
-  resource_group_name  = azurerm_resource_group.unused_resources.name
-  storage_account_type = "Premium_LRS" # Cost signal: Premium unattached
-  create_option        = "Empty"
-  disk_size_gb         = "64"
-
-  tags = {
-    Status = "Unattached storage"
-  }
-}
+# resource "azurerm_managed_disk" "orphaned_disk" {
+#   name                 = "disk-orphaned"
+#   location             = azurerm_resource_group.unused_resources.location
+#   resource_group_name  = azurerm_resource_group.unused_resources.name
+#   storage_account_type = "Premium_LRS" # Cost signal: Premium unattached
+#   create_option        = "Empty"
+#   disk_size_gb         = "64"
+#
+#   tags = {
+#     Status = "Unattached storage"
+#   }
+# }
 
 # SIGNAL: Application Gateway with no backend targets
 resource "azurerm_application_gateway" "unused_appgw" {
