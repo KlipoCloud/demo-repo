@@ -1,3 +1,4 @@
+@ -0,0 +1,131 @@
 # Signal 3: Missing Auto-scaling and Right-sizing
 resource "azurerm_resource_group" "no_autoscaling" {
   name     = "rg-no-autoscaling-test"
@@ -58,64 +59,6 @@ resource "azurerm_virtual_machine_scale_set" "static_vmss" {
   }
 }
 
-# Added autoscaling configuration for the VM Scale Set
-resource "azurerm_monitor_autoscale_setting" "vmss_autoscale" {
-  name                = "autoscale-vmss-static"
-  resource_group_name = azurerm_resource_group.no_autoscaling.name
-  location            = azurerm_resource_group.no_autoscaling.location
-  target_resource_id  = azurerm_virtual_machine_scale_set.static_vmss.id
-
-  profile {
-    name = "defaultProfile"
-
-    capacity {
-      minimum = 1
-      maximum = 5
-      default = 3
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_virtual_machine_scale_set.static_vmss.id
-        operator           = "GreaterThan"
-        statistic          = "Average"
-        threshold          = 75
-        time_aggregation   = "Average"
-        time_grain         = "PT1M"
-        time_window        = "PT5M"
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_virtual_machine_scale_set.static_vmss.id
-        operator           = "LessThan"
-        statistic          = "Average"
-        threshold          = 25
-        time_aggregation   = "Average"
-        time_grain         = "PT1M"
-        time_window        = "PT5M"
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-  }
-}
-
 # SIGNAL: App Service Plan without auto-scaling
 resource "azurerm_service_plan" "fixed_app_plan" {
   name                = "plan-fixed"
@@ -127,64 +70,6 @@ resource "azurerm_service_plan" "fixed_app_plan" {
   tags = {
     Scaling = "manual"
     # SIGNAL: Manual scaling for production workload
-  }
-}
-
-# Added autoscaling configuration for the App Service Plan
-resource "azurerm_monitor_autoscale_setting" "app_service_plan_autoscale" {
-  name                = "autoscale-app-service-plan"
-  resource_group_name = azurerm_resource_group.no_autoscaling.name
-  location            = azurerm_resource_group.no_autoscaling.location
-  target_resource_id  = azurerm_service_plan.fixed_app_plan.id
-
-  profile {
-    name = "defaultProfile"
-
-    capacity {
-      minimum = 1
-      maximum = 3
-      default = 2
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_service_plan.fixed_app_plan.id
-        operator           = "GreaterThan"
-        statistic          = "Average"
-        threshold          = 75
-        time_aggregation   = "Average"
-        time_grain         = "PT1M"
-        time_window        = "PT5M"
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_service_plan.fixed_app_plan.id
-        operator           = "LessThan"
-        statistic          = "Average"
-        threshold          = 25
-        time_aggregation   = "Average"
-        time_grain         = "PT1M"
-        time_window        = "PT5M"
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
   }
 }
 
