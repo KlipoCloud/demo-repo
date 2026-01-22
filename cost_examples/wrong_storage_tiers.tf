@@ -1,3 +1,4 @@
+@ -0,0 +1,132 @@
 # Signal 4: Wrong Storage Tiers and Backup Policies
 resource "azurerm_resource_group" "wrong_storage" {
   name     = "rg-wrong-storage-test"
@@ -21,9 +22,6 @@ resource "azurerm_storage_account" "expensive_archive" {
     DataType = "logs-archive"
     # SIGNAL: Archive data using expensive hot storage
   }
-
-  # Updated to use Cool tier for archival purposes
-  account_tier = "Cool"
 }
 
 # SIGNAL: Premium disk for non-critical workloads
@@ -31,7 +29,7 @@ resource "azurerm_managed_disk" "expensive_disk" {
   name                 = "disk-premium-logs"
   location             = azurerm_resource_group.wrong_storage.location
   resource_group_name  = azurerm_resource_group.wrong_storage.name
-  storage_account_type = "Standard_LRS" # Updated from Premium_LRS to Standard_LRS for cost optimization
+  storage_account_type = "Premium_LRS" # SIGNAL: Premium for log storage
   create_option        = "Empty"
   disk_size_gb         = "512"
 
