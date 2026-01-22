@@ -5,18 +5,18 @@ resource "azurerm_resource_group" "unused_natgw" {
 }
 
 # SIGNAL: NAT Gateway with no subnet associations
-resource "azurerm_nat_gateway" "unused_nat" {
-  name                    = "nat-unused"
-  location                = azurerm_resource_group.unused_natgw.location
-  resource_group_name     = azurerm_resource_group.unused_natgw.name
-  sku_name               = "Standard"
-  idle_timeout_in_minutes = 10
+# resource "azurerm_nat_gateway" "unused_nat" {
+#   name                    = "nat-unused"
+#   location                = azurerm_resource_group.unused_natgw.location
+#   resource_group_name     = azurerm_resource_group.unused_natgw.name
+#   sku_name               = "Standard"
+#   idle_timeout_in_minutes = 10
 
-  tags = {
-    Status = "deployed-but-unused"
-    # SIGNAL: NAT Gateway burning money with no associations
-  }
-}
+#   tags = {
+#     Status = "deployed-but-unused"
+#     # SIGNAL: NAT Gateway burning money with no associations
+#   }
+# }
 
 # SIGNAL: Public IP allocated for NAT Gateway but NAT Gateway unused
 resource "azurerm_public_ip" "unused_nat_ip" {
