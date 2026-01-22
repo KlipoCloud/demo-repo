@@ -21,6 +21,9 @@ resource "azurerm_storage_account" "expensive_archive" {
     DataType = "logs-archive"
     # SIGNAL: Archive data using expensive hot storage
   }
+
+  # Updated to use Cool tier for archival purposes
+  account_tier = "Cool"
 }
 
 # SIGNAL: Premium disk for non-critical workloads
