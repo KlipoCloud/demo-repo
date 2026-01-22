@@ -66,13 +66,13 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
     name              = "premium-os"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Premium_LRS" # SIGNAL: Premium OS for dev
+    managed_disk_type = "Standard_LRS" # Updated from Premium_LRS to Standard_LRS for cost optimization
   }
 
   # SIGNAL: Multiple premium data disks for development
   storage_data_disk {
     name              = "premium-data-1"
-    managed_disk_type = "Premium_LRS"
+    managed_disk_type = "StandardSSD_LRS" # Updated from Premium_LRS to StandardSSD_LRS for cost optimization
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "128"
@@ -80,7 +80,7 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
 
   storage_data_disk {
     name              = "premium-data-2"
-    managed_disk_type = "Premium_LRS"
+    managed_disk_type = "StandardSSD_LRS" # Updated from Premium_LRS to StandardSSD_LRS for cost optimization
     create_option     = "Empty"
     lun               = 1
     disk_size_gb      = "256"
@@ -106,6 +106,25 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
     Environment = "development"
     # SIGNAL: Premium storage for development environment
   }
+}
+
+resource "azurerm_dev_test_schedule" "multi_premium_vm_shutdown" {
+  name                = "auto-shutdown-schedule"
+  location            = azurerm_resource_group.wrong_storage.location
+  resource_group_name = azurerm_resource_group.wrong_storage.name
+  lab_name            = "multi_premium_vm_lab"
+  task_type           = "ComputeVmShutdownTask"
+  status              = "Enabled"
+  daily_recurrence {
+    time = "1900"
+  }
+  time_zone_id = "Pacific Standard Time"
+  notification_settings {
+    status = "Enabled"
+    email_recipient = "admin@example.com"
+    notification_locale = "en"
+  }
+  target_resource_id = azurerm_virtual_machine.multi_premium_vm.id
 }
 
 resource "azurerm_virtual_network" "storage_vnet" {
