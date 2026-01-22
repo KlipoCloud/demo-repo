@@ -134,10 +134,10 @@ resource "azurerm_subnet" "appgw_subnet" {
   address_prefixes     = ["10.1.1.0/24"]
 }
 
-resource "azurerm_public_ip" "appgw_ip" {
-  name                = "pip-appgw"
-  resource_group_name = azurerm_resource_group.unused_resources.name
-  location            = azurerm_resource_group.unused_resources.location
-  allocation_method   = "Static"
-  sku                = "Standard"
-}
+# resource "azurerm_public_ip" "appgw_ip" {
+#   name                = "pip-appgw"
+#   resource_group_name = azurerm_resource_group.unused_resources.name
+#   location            = azurerm_resource_group.unused_resources.location
+#   allocation_method   = "Static"
+#   sku                = "Standard"
+# }
