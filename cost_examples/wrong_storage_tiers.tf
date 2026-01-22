@@ -31,7 +31,7 @@ resource "azurerm_managed_disk" "expensive_disk" {
   name                 = "disk-premium-logs"
   location             = azurerm_resource_group.wrong_storage.location
   resource_group_name  = azurerm_resource_group.wrong_storage.name
-  storage_account_type = "Premium_LRS" # SIGNAL: Premium for log storage
+  storage_account_type = "Standard_LRS" # Updated from Premium_LRS to Standard_LRS for cost optimization
   create_option        = "Empty"
   disk_size_gb         = "512"
 
