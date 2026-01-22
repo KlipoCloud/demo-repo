@@ -19,18 +19,18 @@ resource "azurerm_resource_group" "unused_natgw" {
 # }
 
 # SIGNAL: Public IP allocated for NAT Gateway but NAT Gateway unused
-resource "azurerm_public_ip" "unused_nat_ip" {
-  name                = "pip-unused-nat"
-  resource_group_name = azurerm_resource_group.unused_natgw.name
-  location            = azurerm_resource_group.unused_natgw.location
-  allocation_method   = "Static"
-  sku                = "Standard"
+# resource "azurerm_public_ip" "unused_nat_ip" {
+#   name                = "pip-unused-nat"
+#   resource_group_name = azurerm_resource_group.unused_natgw.name
+#   location            = azurerm_resource_group.unused_natgw.location
+#   allocation_method   = "Static"
+#   sku                = "Standard"
 
-  tags = {
-    Purpose = "nat-gateway"
-    # SIGNAL: Public IP for unused NAT Gateway
-  }
-}
+#   tags = {
+#     Purpose = "nat-gateway"
+#     # SIGNAL: Public IP for unused NAT Gateway
+#   }
+# }
 
 resource "azurerm_nat_gateway_public_ip_association" "unused_nat_ip_assoc" {
   nat_gateway_id       = azurerm_nat_gateway.unused_nat.id
