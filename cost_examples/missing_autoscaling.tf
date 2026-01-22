@@ -131,6 +131,65 @@ resource "azurerm_service_plan" "fixed_app_plan" {
   }
 }
 
+# Added auto-scaling configuration for the App Service Plan
+resource "azurerm_monitor_autoscale_setting" "app_service_plan_autoscale" {
+  name                = "autoscale-app-service-plan"
+  resource_group_name = azurerm_resource_group.no_autoscaling.name
+  location            = azurerm_resource_group.no_autoscaling.location
+
+  profiles {
+    name = "defaultProfile"
+
+    capacity {
+      minimum = 1
+      maximum = 5
+      default = 2
+    }
+
+    rules {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.fixed_app_plan.id
+        operator           = "GreaterThan"
+        statistic          = "Average"
+        threshold          = 75
+        time_grain         = "PT1M"
+        time_window        = "PT5M"
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rules {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.fixed_app_plan.id
+        operator           = "LessThan"
+        statistic          = "Average"
+        threshold          = 25
+        time_grain         = "PT1M"
+        time_window        = "PT5M"
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+  }
+
+  tags = {
+    Environment = "production"
+  }
+}
+
 resource "azurerm_linux_web_app" "fixed_webapp" {
   name                = "app-fixed-scaling"
   resource_group_name = azurerm_resource_group.no_autoscaling.name
