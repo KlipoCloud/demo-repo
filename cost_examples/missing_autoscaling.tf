@@ -1,4 +1,3 @@
-@ -0,0 +1,131 @@
 # Signal 3: Missing Auto-scaling and Right-sizing
 resource "azurerm_resource_group" "no_autoscaling" {
   name     = "rg-no-autoscaling-test"
