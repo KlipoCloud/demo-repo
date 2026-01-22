@@ -1,4 +1,3 @@
-@ -0,0 +1,70 @@
 # Signal 1: Underutilized VM - Small VM but still wasteful patterns
 resource "azurerm_resource_group" "underutilized" {
   name     = "rg-underutilized-test"
