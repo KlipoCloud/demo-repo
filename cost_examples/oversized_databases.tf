@@ -96,8 +96,8 @@ resource "azurerm_redis_cache" "oversized_redis" {
   location            = azurerm_resource_group.oversized_db.location
   resource_group_name = azurerm_resource_group.oversized_db.name
   capacity            = 1
-  family              = "C" # Updated to Standard family for basic caching
-  sku_name            = "Standard" # Updated from Premium to Standard
+  family              = "C"
+  sku_name            = "Standard"
 
   enable_non_ssl_port = false
 
