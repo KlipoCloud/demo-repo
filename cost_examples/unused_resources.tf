@@ -1,4 +1,3 @@
-@ -0,0 +1,143 @@
 # Signal 2: Unused/Orphaned Resources
 resource "azurerm_resource_group" "unused_resources" {
   name     = "rg-unused-test"
