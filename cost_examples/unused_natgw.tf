@@ -1,4 +1,3 @@
-@ -0,0 +1,104 @@
 # Signal 5: Unused NAT Gateway
 resource "azurerm_resource_group" "unused_natgw" {
   name     = "rg-unused-natgw-test"
