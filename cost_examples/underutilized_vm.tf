@@ -17,7 +17,7 @@ resource "azurerm_virtual_machine" "idle_vm" {
     name              = "idle-os-disk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Premium_LRS"
+    managed_disk_type = "Standard_LRS"
   }
 
   storage_image_reference {
@@ -67,4 +67,21 @@ resource "azurerm_network_interface" "idle_nic" {
     subnet_id                     = azurerm_subnet.idle_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
+}
+
+resource "azurerm_dev_test_schedule" "idle_vm_shutdown" {
+  name                = "idle-vm-shutdown-schedule"
+  location            = azurerm_resource_group.underutilized.location
+  resource_group_name = azurerm_resource_group.underutilized.name
+  daily_recurrence {
+    time = "1900"
+  }
+  time_zone_id = "Pacific Standard Time"
+  notification_settings {
+    status = "Enabled"
+    email_recipient = ["devuser@example.com"]
+    webhook_url     = ""
+    minutes_to_notify_before = 15
+  }
+  target_resource_id = azurerm_virtual_machine.idle_vm.id
 }
