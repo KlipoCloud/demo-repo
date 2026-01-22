@@ -19,7 +19,7 @@ resource "azurerm_mssql_database" "oversized_db" {
   server_id = azurerm_mssql_server.oversized_sql_server.id
 
   # SIGNAL: S4 tier (200 DTUs) for development/low-usage app
-  sku_name = "S0"
+  sku_name = "Basic"
 
   tags = {
     Environment = "development"
@@ -141,7 +141,7 @@ resource "azurerm_mssql_database" "redundant_db_1" {
 resource "azurerm_mssql_database" "batch_db" {
   name      = "db-batch-processing"
   server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "GP_S_Gen5_2" # Updated to serverless-compatible tier
+  sku_name  = "HS_Gen5_2" # Updated to serverless-compatible tier
 
   tags = {
     Usage     = "batch-daily"
