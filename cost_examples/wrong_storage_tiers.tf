@@ -1,4 +1,3 @@
-@ -0,0 +1,132 @@
 # Signal 4: Wrong Storage Tiers and Backup Policies
 resource "azurerm_resource_group" "wrong_storage" {
   name     = "rg-wrong-storage-test"
