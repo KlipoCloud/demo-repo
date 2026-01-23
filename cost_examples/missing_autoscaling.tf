@@ -123,7 +123,7 @@ resource "azurerm_service_plan" "fixed_app_plan" {
   resource_group_name = azurerm_resource_group.no_autoscaling.name
   location            = azurerm_resource_group.no_autoscaling.location
   os_type             = "Linux"
-  sku_name            = "S1" # SIGNAL: Fixed S1 tier without auto-scaling
+  sku_name            = "Y1" # Updated to consumption-based pricing tier
 
   tags = {
     Scaling = "manual"
