@@ -113,16 +113,16 @@ resource "azurerm_redis_cache" "oversized_redis" {
 }
 
 # SIGNAL: Multiple database instances for single application
-resource "azurerm_mssql_database" "redundant_db_1" {
-  name      = "db-app-dev"
-  server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "S2" # 50 DTUs
+# resource "azurerm_mssql_database" "redundant_db_1" {
+#   name      = "db-app-dev"
+#   server_id = azurerm_mssql_server.oversized_sql_server.id
+#   sku_name  = "S2" # 50 DTUs
 
-  tags = {
-    Environment = "development"
-    App         = "web-app"
-  }
-}
+#   tags = {
+#     Environment = "development"
+#     App         = "web-app"
+#   }
+# }
 
 # resource "azurerm_mssql_database" "redundant_db_2" {
 #   name      = "db-app-test"
@@ -141,7 +141,7 @@ resource "azurerm_mssql_database" "redundant_db_1" {
 resource "azurerm_mssql_database" "batch_db" {
   name      = "db-batch-processing"
   server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "HS_Gen5_2" # Updated to serverless-compatible tier
+  sku_name  = "Serverless" # Updated to serverless-compatible tier
 
   tags = {
     Usage     = "batch-daily"
