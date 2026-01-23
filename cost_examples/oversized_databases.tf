@@ -19,7 +19,7 @@ resource "azurerm_mssql_database" "oversized_db" {
   server_id = azurerm_mssql_server.oversized_sql_server.id
 
   # SIGNAL: S4 tier (200 DTUs) for development/low-usage app
-  sku_name = "Standard"
+  sku_name = "S4"
 
   tags = {
     Environment = "development"
@@ -38,7 +38,7 @@ resource "azurerm_postgresql_server" "oversized_postgres" {
   administrator_login          = "psqladmin"
   administrator_login_password = "P@ssw0rd123!"
 
-  sku_name   = "GP_Gen5_1" # Adjusted to 1 vCore for test environment
+  sku_name   = "GP_Gen5_8" # SIGNAL: 8 vCores for test environment
   version    = "11"
   storage_mb = 102400
 
@@ -87,7 +87,7 @@ resource "azurerm_cosmosdb_sql_database" "oversized_cosmos_db" {
   account_name        = azurerm_cosmosdb_account.oversized_cosmos.name
 
   # SIGNAL: High throughput for simple dev application
-  throughput = 200 # RU/s - adjusted for development
+  throughput = 1000 # RU/s - expensive for development
 }
 
 # SIGNAL: Redis Cache with Premium tier for caching simple data
@@ -96,8 +96,8 @@ resource "azurerm_redis_cache" "oversized_redis" {
   location            = azurerm_resource_group.oversized_db.location
   resource_group_name = azurerm_resource_group.oversized_db.name
   capacity            = 1
-  family              = "C" # Updated to Standard family for basic caching
-  sku_name            = "Basic"
+  family              = "P" # SIGNAL: Premium family for basic caching
+  sku_name            = "Premium"
 
   enable_non_ssl_port = false
 
@@ -113,35 +113,35 @@ resource "azurerm_redis_cache" "oversized_redis" {
 }
 
 # SIGNAL: Multiple database instances for single application
-# resource "azurerm_mssql_database" "redundant_db_1" {
-#   name      = "db-app-dev"
-#   server_id = azurerm_mssql_server.oversized_sql_server.id
-#   sku_name  = "S2" # 50 DTUs
+resource "azurerm_mssql_database" "redundant_db_1" {
+  name      = "db-app-dev"
+  server_id = azurerm_mssql_server.oversized_sql_server.id
+  sku_name  = "S2" # 50 DTUs
 
-#   tags = {
-#     Environment = "development"
-#     App         = "web-app"
-#   }
-# }
+  tags = {
+    Environment = "development"
+    App         = "web-app"
+  }
+}
 
-# resource "azurerm_mssql_database" "redundant_db_2" {
-#   name      = "db-app-test"
-#   server_id = azurerm_mssql_server.oversized_sql_server.id
-#   sku_name  = "S2" # SIGNAL: Another 50 DTUs for same app
+resource "azurerm_mssql_database" "redundant_db_2" {
+  name      = "db-app-test"
+  server_id = azurerm_mssql_server.oversized_sql_server.id
+  sku_name  = "S2" # SIGNAL: Another 50 DTUs for same app
 
-#   tags = {
-#     Environment = "test"
-#     App         = "web-app"
-#     # SIGNAL: Could share database with different schema
-#     CostIssue   = "duplicate-database-instances"
-#   }
-# }
+  tags = {
+    Environment = "test"
+    App         = "web-app"
+    # SIGNAL: Could share database with different schema
+    CostIssue   = "duplicate-database-instances"
+  }
+}
 
 # SIGNAL: Always-on database for batch processing
 resource "azurerm_mssql_database" "batch_db" {
   name      = "db-batch-processing"
   server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "GP_S_Gen5_1" # Updated to serverless-compatible tier
+  sku_name  = "S3" # SIGNAL: Always-on for batch job that runs once daily
 
   tags = {
     Usage     = "batch-daily"
