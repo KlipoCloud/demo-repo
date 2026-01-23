@@ -87,7 +87,7 @@ resource "azurerm_cosmosdb_sql_database" "oversized_cosmos_db" {
   account_name        = azurerm_cosmosdb_account.oversized_cosmos.name
 
   # SIGNAL: High throughput for simple dev application
-  throughput = 400 # RU/s - adjusted for development
+  throughput = 200 # RU/s - adjusted for development
 }
 
 # SIGNAL: Redis Cache with Premium tier for caching simple data
