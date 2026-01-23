@@ -17,7 +17,7 @@ resource "azurerm_virtual_machine" "idle_vm" {
     name              = "idle-os-disk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    managed_disk_type = "Premium_LRS"
   }
 
   storage_image_reference {
@@ -40,21 +40,6 @@ resource "azurerm_virtual_machine" "idle_vm" {
   tags = {
     Purpose = "development"
     # Missing: Environment, CostCenter, Owner
-  }
-
-  # Added auto-shutdown configuration
-  lifecycle {
-    ignore_changes = ["auto_shutdown"]
-  }
-
-  auto_shutdown {
-    enabled = true
-    time    = "1900"
-    timezone = "UTC"
-    notification {
-      enabled = true
-      email   = "admin@example.com"
-    }
   }
 }
 
