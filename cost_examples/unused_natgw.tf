@@ -88,6 +88,7 @@ resource "azurerm_virtual_machine" "vm_without_nat" {
   tags = {
     OutboundConnectivity = "none"
     # SIGNAL: VM in subnet that doesn't use the deployed NAT Gateway
+    # Suggestion: Review the necessity of the NAT Gateway for this VM.
   }
 }
 
