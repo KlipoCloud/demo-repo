@@ -55,41 +55,41 @@ resource "azurerm_subnet" "nat_subnet" {
 }
 
 # SIGNAL: VM that could use NAT Gateway but doesn't
-resource "azurerm_virtual_machine" "vm_without_nat" {
-  name                = "vm-no-nat"
-  location            = azurerm_resource_group.unused_natgw.location
-  resource_group_name = azurerm_resource_group.unused_natgw.name
-  network_interface_ids = [azurerm_network_interface.vm_nic.id]
-  vm_size = "Standard_B1s"
+# resource "azurerm_virtual_machine" "vm_without_nat" {
+#   name                = "vm-no-nat"
+#   location            = azurerm_resource_group.unused_natgw.location
+#   resource_group_name = azurerm_resource_group.unused_natgw.name
+#   network_interface_ids = [azurerm_network_interface.vm_nic.id]
+#   vm_size = "Standard_B1s"
 
-  storage_os_disk {
-    name              = "vm-os-disk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-  }
+#   storage_os_disk {
+#     name              = "vm-os-disk"
+#     caching           = "ReadWrite"
+#     create_option     = "FromImage"
+#     managed_disk_type = "Standard_LRS"
+#   }
 
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
-    version   = "latest"
-  }
+#   storage_image_reference {
+#     publisher = "Canonical"
+#     offer     = "0001-com-ubuntu-server-focal"
+#     sku       = "20_04-lts"
+#     version   = "latest"
+#   }
 
-  os_profile {
-    computer_name  = "vm-no-nat"
-    admin_username = "adminuser"
-  }
+#   os_profile {
+#     computer_name  = "vm-no-nat"
+#     admin_username = "adminuser"
+#   }
 
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
+#   os_profile_linux_config {
+#     disable_password_authentication = false
+#   }
 
-  tags = {
-    OutboundConnectivity = "none"
-    # SIGNAL: VM in subnet that doesn't use the deployed NAT Gateway
-  }
-}
+#   tags = {
+#     OutboundConnectivity = "none"
+#     # SIGNAL: VM in subnet that doesn't use the deployed NAT Gateway
+#   }
+# }
 
 resource "azurerm_network_interface" "vm_nic" {
   name                = "nic-vm-no-nat"

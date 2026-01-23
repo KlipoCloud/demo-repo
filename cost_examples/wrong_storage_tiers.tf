@@ -75,14 +75,6 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
     disk_size_gb      = "128"
   }
 
-  storage_data_disk {
-    name              = "premium-data-2"
-    managed_disk_type = "Standard_LRS" # Updated to use Standard_LRS for cost optimization
-    create_option     = "Empty"
-    lun               = 1
-    disk_size_gb      = "256"
-  }
-
   storage_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-focal"
