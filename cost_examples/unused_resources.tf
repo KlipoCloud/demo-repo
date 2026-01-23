@@ -5,18 +5,18 @@ resource "azurerm_resource_group" "unused_resources" {
 }
 
 # SIGNAL: Unused public IP (allocated but not attached)
-resource "azurerm_public_ip" "orphaned_ip" {
-  name                = "pip-orphaned"
-  resource_group_name = azurerm_resource_group.unused_resources.name
-  location            = azurerm_resource_group.unused_resources.location
-  allocation_method   = "Static"
-  sku                = "Standard"
-
-  # SIGNAL: No attachment to any resource - burning money
-  tags = {
-    Status = "Allocated but unused"
-  }
-}
+# resource "azurerm_public_ip" "orphaned_ip" {
+#   name                = "pip-orphaned"
+#   resource_group_name = azurerm_resource_group.unused_resources.name
+#   location            = azurerm_resource_group.unused_resources.location
+#   allocation_method   = "Static"
+#   sku                = "Standard"
+#
+#   # SIGNAL: No attachment to any resource - burning money
+#   tags = {
+#     Status = "Allocated but unused"
+#   }
+# }
 
 # SIGNAL: Storage account with expensive tier for dev
 resource "azurerm_storage_account" "expensive_storage" {
@@ -58,7 +58,7 @@ resource "azurerm_lb" "unused_lb" {
 #   storage_account_type = "Premium_LRS" # Cost signal: Premium unattached
 #   create_option        = "Empty"
 #   disk_size_gb         = "64"
-
+#
 #   tags = {
 #     Status = "Unattached storage"
 #   }
