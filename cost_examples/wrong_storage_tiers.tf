@@ -12,6 +12,8 @@ resource "azurerm_storage_account" "expensive_archive" {
   account_tier             = "Standard"
   account_replication_type = "GRS" # SIGNAL: Geo-redundant for dev data
 
+  access_tier = "Cool" # Updated to optimize storage costs for archival data
+
   blob_properties {
     # SIGNAL: No lifecycle management configured
     # Data stays in Hot tier indefinitely
