@@ -24,7 +24,7 @@ resource "azurerm_storage_account" "expensive_storage" {
   resource_group_name      = azurerm_resource_group.unused_resources.name
   location                 = azurerm_resource_group.unused_resources.location
   account_tier             = "Standard" # Updated to enhance performance and compliance
-  account_replication_type = "LRS"      # Updated to optimize costs for development
+  account_replication_type = "ZRS"      # Updated to optimize costs for development
 
   tags = {
     Environment = "development"
