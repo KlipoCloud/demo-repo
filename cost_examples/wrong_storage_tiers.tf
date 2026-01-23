@@ -69,7 +69,7 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
   # SIGNAL: Multiple premium data disks for development
   storage_data_disk {
     name              = "premium-data-1"
-    managed_disk_type = "StandardSSD_LRS" # Updated to use StandardSSD_LRS for cost optimization
+    managed_disk_type = "Standard_LRS" # Updated to use Standard_LRS for cost optimization
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "128"
@@ -77,7 +77,7 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
 
   storage_data_disk {
     name              = "premium-data-2"
-    managed_disk_type = "StandardSSD_LRS" # Updated to use StandardSSD_LRS for cost optimization
+    managed_disk_type = "Standard_LRS" # Updated to use Standard_LRS for cost optimization
     create_option     = "Empty"
     lun               = 1
     disk_size_gb      = "256"
