@@ -33,22 +33,22 @@ resource "azurerm_storage_account" "expensive_storage" {
 }
 
 # SIGNAL: Load balancer with no backend pool
-resource "azurerm_lb" "unused_lb" {
-  name                = "lb-unused"
-  location            = azurerm_resource_group.unused_resources.location
-  resource_group_name = azurerm_resource_group.unused_resources.name
-  sku                = "Standard"
-
-  frontend_ip_configuration {
-    name                 = "PublicIPAddress"
-    public_ip_address_id = azurerm_public_ip.orphaned_ip.id
-  }
-
-  # SIGNAL: No backend pool configured - unused load balancer
-  tags = {
-    Status = "Configured but no backend"
-  }
-}
+# resource "azurerm_lb" "unused_lb" {
+#   name                = "lb-unused"
+#   location            = azurerm_resource_group.unused_resources.location
+#   resource_group_name = azurerm_resource_group.unused_resources.name
+#   sku                = "Standard"
+#
+#   frontend_ip_configuration {
+#     name                 = "PublicIPAddress"
+#     public_ip_address_id = azurerm_public_ip.orphaned_ip.id
+#   }
+#
+#   # SIGNAL: No backend pool configured - unused load balancer
+#   tags = {
+#     Status = "Configured but no backend"
+#   }
+# }
 
 # SIGNAL: Managed disk not attached to any VM
 # resource "azurerm_managed_disk" "orphaned_disk" {
