@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "expensive_archive" {
   location                 = azurerm_resource_group.wrong_storage.location
   account_tier             = "Standard" # Updated to use Standard tier for cost optimization
   account_replication_type = "LRS" # Updated to use locally redundant storage for cost optimization
-  access_tier              = "Cool" # Updated to use Cool access tier for cost optimization
+  access_tier              = "Archive" # Updated to use Archive access tier for cost optimization
 
   blob_properties {
     # SIGNAL: No lifecycle management configured
