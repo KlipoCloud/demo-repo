@@ -225,7 +225,7 @@ resource "azurerm_mssql_database" "fixed_db" {
   collation      = "SQL_Latin1_General_CP1_CI_AS"
 
   # SIGNAL: Fixed DTU model instead of serverless for dev/test
-  sku_name = "GP_S_Gen5_1" # Updated to serverless-compatible tier
+  sku_name = "GP_S_Gen5_2" # Updated to serverless-compatible tier
 
   tags = {
     Environment = "development"
