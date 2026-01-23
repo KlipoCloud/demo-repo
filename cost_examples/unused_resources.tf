@@ -23,7 +23,7 @@ resource "azurerm_storage_account" "expensive_storage" {
   name                     = "stexpensivedev001"
   resource_group_name      = azurerm_resource_group.unused_resources.name
   location                 = azurerm_resource_group.unused_resources.location
-  account_tier             = "Standard" # Cost signal: Premium for dev
+  account_tier             = "Basic" # Updated to reduce costs for development
   account_replication_type = "LRS"      # Updated to reduce costs for development
 
   tags = {
