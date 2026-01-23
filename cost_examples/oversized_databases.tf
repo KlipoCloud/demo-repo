@@ -19,7 +19,7 @@ resource "azurerm_mssql_database" "oversized_db" {
   server_id = azurerm_mssql_server.oversized_sql_server.id
 
   # SIGNAL: S4 tier (200 DTUs) for development/low-usage app
-  sku_name = "S4"
+  sku_name = "S0"
 
   tags = {
     Environment = "development"
@@ -124,24 +124,24 @@ resource "azurerm_mssql_database" "redundant_db_1" {
   }
 }
 
-resource "azurerm_mssql_database" "redundant_db_2" {
-  name      = "db-app-test"
-  server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "S2" # SIGNAL: Another 50 DTUs for same app
+# resource "azurerm_mssql_database" "redundant_db_2" {
+#   name      = "db-app-test"
+#   server_id = azurerm_mssql_server.oversized_sql_server.id
+#   sku_name  = "S2" # SIGNAL: Another 50 DTUs for same app
 
-  tags = {
-    Environment = "test"
-    App         = "web-app"
-    # SIGNAL: Could share database with different schema
-    CostIssue   = "duplicate-database-instances"
-  }
-}
+#   tags = {
+#     Environment = "test"
+#     App         = "web-app"
+#     # SIGNAL: Could share database with different schema
+#     CostIssue   = "duplicate-database-instances"
+#   }
+# }
 
 # SIGNAL: Always-on database for batch processing
 resource "azurerm_mssql_database" "batch_db" {
   name      = "db-batch-processing"
   server_id = azurerm_mssql_server.oversized_sql_server.id
-  sku_name  = "S3" # SIGNAL: Always-on for batch job that runs once daily
+  sku_name  = "GP_S_Gen5_1" # Updated to serverless SKU for cost optimization
 
   tags = {
     Usage     = "batch-daily"
