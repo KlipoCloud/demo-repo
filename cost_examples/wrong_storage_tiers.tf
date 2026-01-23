@@ -15,6 +15,7 @@ resource "azurerm_storage_account" "expensive_archive" {
   blob_properties {
     # SIGNAL: No lifecycle management configured
     # Data stays in Hot tier indefinitely
+    access_tier = "Cool" # Updated to Cool tier for cost optimization
   }
 
   tags = {
