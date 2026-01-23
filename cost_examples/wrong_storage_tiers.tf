@@ -9,9 +9,8 @@ resource "azurerm_storage_account" "expensive_archive" {
   name                     = "stexpensivehot001"
   resource_group_name      = azurerm_resource_group.wrong_storage.name
   location                 = azurerm_resource_group.wrong_storage.location
-  account_tier             = "Standard" # Updated to use Standard tier for cost optimization
-  account_replication_type = "LRS" # Updated to use locally redundant storage for cost optimization
-  access_tier              = "Archive" # Updated to use Archive access tier for cost optimization
+  account_tier             = "Standard"
+  account_replication_type = "GRS" # SIGNAL: Geo-redundant for dev data
 
   blob_properties {
     # SIGNAL: No lifecycle management configured
@@ -22,8 +21,6 @@ resource "azurerm_storage_account" "expensive_archive" {
     DataType = "logs-archive"
     # SIGNAL: Archive data using expensive hot storage
   }
-
-  # Verified: The Archive tier is appropriate for the access patterns of the log data.
 }
 
 # SIGNAL: Premium disk for non-critical workloads
@@ -31,9 +28,9 @@ resource "azurerm_managed_disk" "expensive_disk" {
   name                 = "disk-premium-logs"
   location             = azurerm_resource_group.wrong_storage.location
   resource_group_name  = azurerm_resource_group.wrong_storage.name
-  storage_account_type = "Standard_HDD" # Updated to use Standard_HDD for cost optimization
+  storage_account_type = "Premium_LRS" # SIGNAL: Premium for log storage
   create_option        = "Empty"
-  disk_size_gb         = "256" # Reduced disk size for cost optimization
+  disk_size_gb         = "512"
 
   tags = {
     Purpose = "log-storage"
@@ -66,16 +63,24 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
     name              = "premium-os"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS" # Updated to use Standard_LRS for cost optimization
+    managed_disk_type = "Premium_LRS" # SIGNAL: Premium OS for dev
   }
 
   # SIGNAL: Multiple premium data disks for development
   storage_data_disk {
     name              = "premium-data-1"
-    managed_disk_type = "Standard_LRS" # Updated to use Standard_LRS for cost optimization
+    managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "128"
+  }
+
+  storage_data_disk {
+    name              = "premium-data-2"
+    managed_disk_type = "Premium_LRS"
+    create_option     = "Empty"
+    lun               = 1
+    disk_size_gb      = "256"
   }
 
   storage_image_reference {
@@ -98,23 +103,6 @@ resource "azurerm_virtual_machine" "multi_premium_vm" {
     Environment = "development"
     # SIGNAL: Premium storage for development environment
   }
-}
-
-resource "azurerm_dev_test_schedule" "multi_premium_vm_shutdown" {
-  name                = "auto-shutdown"
-  location            = azurerm_resource_group.wrong_storage.location
-  resource_group_name = azurerm_resource_group.wrong_storage.name
-  lab_name            = "devtestlab"
-  task_type           = "ComputeVmShutdownTask"
-  status              = "Enabled"
-  daily_recurrence {
-    time = "1900"
-  }
-  time_zone_id = "Pacific Standard Time"
-  notification_settings {
-    status = "Disabled"
-  }
-  target_resource_id = azurerm_virtual_machine.multi_premium_vm.id
 }
 
 resource "azurerm_virtual_network" "storage_vnet" {
