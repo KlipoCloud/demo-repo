@@ -5,32 +5,32 @@ resource "azurerm_resource_group" "unused_natgw" {
 }
 
 # SIGNAL: NAT Gateway with no subnet associations
-resource "azurerm_nat_gateway" "unused_nat" {
-  name                    = "nat-unused"
-  location                = azurerm_resource_group.unused_natgw.location
-  resource_group_name     = azurerm_resource_group.unused_natgw.name
-  sku_name               = "Standard"
-  idle_timeout_in_minutes = 10
+# resource "azurerm_nat_gateway" "unused_nat" {
+#   name                    = "nat-unused"
+#   location                = azurerm_resource_group.unused_natgw.location
+#   resource_group_name     = azurerm_resource_group.unused_natgw.name
+#   sku_name               = "Standard"
+#   idle_timeout_in_minutes = 10
 
-  tags = {
-    Status = "deployed-but-unused"
-    # SIGNAL: NAT Gateway burning money with no associations
-  }
-}
+#   tags = {
+#     Status = "deployed-but-unused"
+#     # SIGNAL: NAT Gateway burning money with no associations
+#   }
+# }
 
 # SIGNAL: Public IP allocated for NAT Gateway but NAT Gateway unused
-resource "azurerm_public_ip" "unused_nat_ip" {
-  name                = "pip-unused-nat"
-  resource_group_name = azurerm_resource_group.unused_natgw.name
-  location            = azurerm_resource_group.unused_natgw.location
-  allocation_method   = "Static"
-  sku                = "Standard"
+# resource "azurerm_public_ip" "unused_nat_ip" {
+#   name                = "pip-unused-nat"
+#   resource_group_name = azurerm_resource_group.unused_natgw.name
+#   location            = azurerm_resource_group.unused_natgw.location
+#   allocation_method   = "Static"
+#   sku                = "Standard"
 
-  tags = {
-    Purpose = "nat-gateway"
-    # SIGNAL: Public IP for unused NAT Gateway
-  }
-}
+#   tags = {
+#     Purpose = "nat-gateway"
+#     # SIGNAL: Public IP for unused NAT Gateway
+#   }
+# }
 
 resource "azurerm_nat_gateway_public_ip_association" "unused_nat_ip_assoc" {
   nat_gateway_id       = azurerm_nat_gateway.unused_nat.id
