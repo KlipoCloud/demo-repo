@@ -32,7 +32,7 @@ resource "azurerm_managed_disk" "expensive_disk" {
   resource_group_name  = azurerm_resource_group.wrong_storage.name
   storage_account_type = "Standard_HDD" # Updated to use Standard_HDD for cost optimization
   create_option        = "Empty"
-  disk_size_gb         = "512"
+  disk_size_gb         = "256" # Reduced disk size for cost optimization
 
   tags = {
     Purpose = "log-storage"
